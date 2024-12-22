@@ -1,0 +1,20 @@
+name: Development workflow
+on:
+  repository_dispatch:
+    types:
+      - deploy-dev
+  workflow_dispatch:
+jobs:
+  deploy-dev:
+    name: Deploy DEV
+    uses: mandarine-io/ci-cd/.github/workflows/deploy.yaml@main
+    with:
+      docker_compose_file: docker-compose.dev.yml
+      additional_deploy_files: config/nginx/nginx.conf
+      target_path: deploy-dev
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      ENV_FILE_CONTENT: ${{ secrets.DEV_ENV_FILE_CONTENT }}
+      SSH_USER: ${{ secrets.SSH_DEV_USER }}
+      SSH_HOST: ${{ secrets.SSH_DEV_HOST }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_DEV_PRIVATE_KEY }}
